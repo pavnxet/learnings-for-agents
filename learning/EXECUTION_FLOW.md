@@ -1,4 +1,4 @@
-<!-- verified-at: init · 2026-11-13 -->
+<!-- verified-at: 966abaa · 2026-11-13 -->
 # Execution Flow & Module Map
 
 ## Entry Points
