@@ -1,10 +1,12 @@
 # Session Execution Summary
 
-## S-20261113-0000 · Project initialized from template
-- **Agent**: Antigravity · **Tier**: T2 · **Status**: DONE
-- **Repo**: branch `main` · base `init` · tree clean
-- **Request**: Initialize template repository structure with Single Project Agent Protocol v2.0
-- **Did**: Created `AGENTS.md`, memory hierarchy in `learning/`, security suite in `scripts/`, git hooks in `.githooks/`, CI in `.github/workflows/`
-- **Verified**: `python scripts/scan_sensitive.py --doctor` -> doctor: OK
-- **Refs**: ADR-001
-- **Open / Next**: Configure project profile in AGENTS.md for specific project stack
+> **SEED FILE.** Append-only: one entry per session that changed something. Never delete history — rotate to `learning/archive/` at ~500 lines. Newest entry goes at the bottom.
+
+## S-<YYYYMMDD-NNNN> · <short title>
+- **Agent**: <agent name> · **Tier**: <T0-T3> · **Status**: <IN-PROGRESS | DONE | BLOCKED>
+- **Repo**: branch `<branch>` · base `<short-sha>` · tree <clean | dirty>
+- **Request**: <what the user asked for>
+- **Did**: <files and behaviour changed>
+- **Verified**: `<command>` -> <result>
+- **Refs**: <ADR-NNN, learning area>
+- **Open / Next**: <follow-ups, or "none">

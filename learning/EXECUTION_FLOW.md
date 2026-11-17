@@ -1,21 +1,39 @@
-<!-- verified-at: 966abaa · 2026-11-13 -->
+<!-- verified-at: <short-sha> · <YYYY-MM-DD> -->
 # Execution Flow & Module Map
 
+> **SEED FILE.** Fill in the project sections as code lands. The "Agent kit" section at the bottom is portable — it ships with the template and needs no edit.
+
 ## Entry Points
-- `scripts/scan_sensitive.py`: Standalone CLI scanner and git hook entry point for secret & PII detection.
-- `scripts/setup.ps1` / `scripts/setup.sh`: One-command bootstrap scripts for configuring local git hooks and denylist.
+- `<path>`: <what starts here, what it is invoked by>
 
 ## Module Map
-- `learning/`: Persistent memory hierarchy (BRIEF, learning, DECISIONS, EXECUTION_FLOW, PLAYBOOKS, TOOLS, summary, INCIDENTS).
-- `scripts/scan_sensitive.py`: Core security utility implementing `--doctor`, `--staged`, `--commit-msg`, `--pre-push`, and `--all`.
-- `.githooks/`: Git hooks intercepting commits and pushes locally.
-- `.github/workflows/`: CI automation ensuring PRs and pushes remain free of sensitive data.
+- `<path>/`: <one-line responsibility>
 
 ## Call Paths
-- Git Commit: `git commit` -> `.githooks/pre-commit` -> `python scripts/scan_sensitive.py --staged` -> Staged diff checked -> PASS/FAIL
-- Commit Message: Git -> `.githooks/commit-msg` -> `python scripts/scan_sensitive.py --commit-msg "$1"` -> PASS/FAIL
-- Git Push: `git push` -> `.githooks/pre-push` -> `python scripts/scan_sensitive.py --pre-push` -> Commit range diff checked -> PASS/FAIL
+- <user action> -> `<a>` -> `<b>` -> <observable result>
 
 ## Data & Config
-- `.git/agent-denylist.txt`: Private, untracked local file containing user-specific terms to block from commits.
-- `.env.example`: Clean reference file containing environment variable names only (zero real secrets).
+- `.env.example`: variable **names** only, zero real values
+- `<other config or schema>`
+
+---
+
+## Agent kit (portable — do not edit)
+
+- `AGENTS.md`: protocol the agent reads each session; Project Profile lives in §12
+- `learning/`: tiered memory — `BRIEF.md`, `learning.md`, `DECISIONS.md`, `EXECUTION_FLOW.md`, `PLAYBOOKS.md`, `TOOLS.md`, `summary.md`, `INCIDENTS.md`
+- `scripts/scan_sensitive.py`: scanner CLI — `--doctor`, `--staged`, `--commit-msg`, `--pre-push`, `--all`
+- `scripts/setup.sh` / `setup.ps1`: one-command bootstrap of hooks and denylist
+- `scripts/init-project.py`: one-time conversion of the template into your project
+- `.githooks/`: pre-commit, commit-msg, pre-push
+- `.github/workflows/secret-scan.yml`: CI scan plus Gitleaks
+- `docs/template-guide.md`: template documentation (deleted by `init-project.py`)
+
+### Kit call paths
+- `git commit` -> `.githooks/pre-commit` -> `python scripts/scan_sensitive.py --staged` -> PASS/FAIL
+- `git commit` -> `.githooks/commit-msg` -> `python scripts/scan_sensitive.py --commit-msg "$1"` -> PASS/FAIL
+- `git push` -> `.githooks/pre-push` -> `python scripts/scan_sensitive.py --pre-push` -> PASS/FAIL
+- `git push` (CI) -> `.github/workflows/secret-scan.yml` -> `--all` + Gitleaks -> PASS/FAIL
+
+### Config the kit owns
+- `.git/agent-denylist.txt`: private, untracked, per-clone list of blocked terms (your name, machine username, handles)
