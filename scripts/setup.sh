@@ -41,3 +41,11 @@ fi
 echo ""
 echo "Running scanner doctor check..."
 python3 scripts/scan_sensitive.py --doctor || python scripts/scan_sensitive.py --doctor
+
+# 5. Point at the one-time project initialisation
+if [ -f "docs/template-guide.md" ]; then
+    echo ""
+    echo "[NEXT] This copy still holds the template's placeholder README."
+    echo "       Convert it to your project:"
+    echo "       python scripts/init-project.py --name \"My Project\""
+fi

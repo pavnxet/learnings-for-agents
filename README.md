@@ -1,120 +1,43 @@
-# learnings-for-agents
+# <project-name>
 
-> **Production-Ready GitHub Repository Template for AI Coding Assistants**  
-> Persistent, token-efficient agent memory + fail-closed publication safety guardrails.
+> One line on what this project is and who it is for. Replace this line.
 
-Compatible with **Claude Code**, **Cursor**, **Gemini Antigravity**, **Copilot**, **Windsurf**, and custom LLM agents.
+## Status
 
----
+- **Stage**: setup — agent kit installed, project profile not filled in yet
+- **Stack**: `<languages, frameworks, runtime, hosting>`
+- **Run**: `<command>`
 
-## 🚀 Quick Start: Use This Template
+## Getting started
 
-### Option 1: On GitHub (Web UI)
-1. Click the green **"Use this template"** button at the top of this repository.
-2. Select **"Create a new repository"**.
-3. Choose your repository name and visibility.
+1. **Install the safety kit** — links the git hooks, creates your private denylist, runs the scanner doctor.
 
-### Option 2: Using GitHub CLI (`gh`)
-```bash
-gh repo create my-awesome-project --template pavnxet/learnings-for-agents --public --clone
-cd my-awesome-project
-```
+   ```bash
+   ./scripts/setup.sh                                          # Linux / macOS
+   powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1  # Windows
+   ```
 
----
+2. **Make the repo yours** — replaces this README with a project one, clears the seeded memory files, and deletes the template guide.
 
-## ⚡ 1-Minute Project Setup
+   ```bash
+   python scripts/init-project.py --name "My Project"
+   ```
 
-Once cloned, initialize your local safety kit and hooks with a single command:
+3. **Fill in the Project Profile** — Section 12 of `AGENTS.md` (stack, install, run, test, entry points, do-not-touch).
+4. **Start prompting.** Your assistant reads `AGENTS.md` and `learning/BRIEF.md` first, then maintains the memory files itself.
 
-### Windows (PowerShell):
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1
-```
-*(Or right-click and run in PowerShell, or execute `.\scripts\setup.ps1` if execution policy is already set).*
+## Layout
 
-### Linux / macOS (Bash):
-```bash
-./scripts/setup.sh
-```
+| Path | What it is | Yours to edit |
+|---|---|---|
+| `AGENTS.md` | Agent protocol + your Project Profile (§12) | yes — §12 first |
+| `learning/` | Tiered agent memory, committed to git | yes — it is project state |
+| `scripts/scan_sensitive.py` | Secret / PII scanner used by hooks and CI | no |
+| `scripts/setup.*`, `scripts/init-project.py` | One-time bootstrap | no |
+| `.githooks/` | pre-commit, commit-msg, pre-push | no |
+| `.github/workflows/secret-scan.yml` | CI scan + Gitleaks | no |
+| `docs/template-guide.md` | How the kit works (template docs, not your project) | delete after reading |
 
-### What Setup Does:
-1. Links `.githooks` via `git config core.hooksPath .githooks`.
-2. Creates your private, untracked local denylist at `.git/agent-denylist.txt`.
-3. Checks that your Git email is a privacy-safe GitHub noreply address.
-4. Executes `python scripts/scan_sensitive.py --doctor` to verify safety gates.
+## About the agent kit
 
----
-
-## 🧠 Why This Template?
-
-Most AI coding assistants suffer from two major problems:
-1. **Context Amnesia**: Every new chat session restarts with a blank slate, re-discovering bugs, conventions, and architectural choices at massive token cost.
-2. **Accidental Credential & PII Leaks**: LLMs frequently paste API keys, personal names, local filesystem paths, or test tokens into commit messages and tracked docs.
-
-This template solves both through **Tiered Memory Architecture** and **Fail-Closed Git Hooks**:
-
-```
-<project-root>/
-├── AGENTS.md                  <- Master protocol & Project Profile (§12)
-├── learning/                  <- Committed AI memory hierarchy
-│   ├── BRIEF.md               <- Tier A: Cold-start summary (the ONLY mandatory read)
-│   ├── learning.md            <- Tier B: Categorized lessons & conventions
-│   ├── DECISIONS.md           <- Tier B: Architecture Decision Records (ADRs)
-│   ├── EXECUTION_FLOW.md      <- Tier B: Living module map & call graphs
-│   ├── PLAYBOOKS.md           <- Tier B: Task recipes
-│   ├── TOOLS.md               <- Tier B: Vetted tool catalog & scoring
-│   ├── summary.md             <- Tier C: Append-only session history
-│   ├── INCIDENTS.md           <- Tier C: Postmortems
-│   ├── topics/                <- Overflow for deep topics
-│   └── archive/               <- Compaction archive (history never deleted)
-├── scripts/
-│   ├── scan_sensitive.py      <- Zero-dependency sensitive content scanner
-│   ├── setup.ps1              <- Windows setup helper
-│   └── setup.sh               <- Linux/macOS setup helper
-├── .githooks/                 <- pre-commit, commit-msg, pre-push hooks
-└── .github/workflows/
-    └── secret-scan.yml        <- Continuous integration safety scanner
-```
-
----
-
-## 📊 Memory Tiers & Token Budget
-
-| File | Tier | Read Mode | Write Mode | Token Budget |
-|---|---|---|---|---|
-| **`AGENTS.md`** | A | Quick Card + §12 always | Human-edited; agents propose | Quick Card ≤ 25 lines |
-| **`learning/BRIEF.md`** | A | Full read on every session start | Rewritten whole when stale | ≤ 100 lines |
-| **`learning/learning.md`** | B | `grep` keyword; read matched area only | Edit in place, no duplicates | ≤ 200 lines |
-| **`learning/DECISIONS.md`** | B | `grep` relevant ADRs | Append; update status in place | Unlimited |
-| **`learning/EXECUTION_FLOW.md`**| B | Read area being touched | Living; update `verified-at` | ≤ 150 lines |
-| **`learning/TOOLS.md`** | B | Consult before adding dependencies | Append tool & score | Unlimited |
-| **`learning/summary.md`** | C | `tail -40` or grep `IN-PROGRESS` | **Append-only** | Rotate at ~500 lines |
-
----
-
-## 🔒 7-Layer Defense in Depth
-
-1. **Pre-write Scanner**: Agents scan text for keys/paths prior to file persistence.
-2. **Doctor Command**: `python scripts/scan_sensitive.py --doctor` ensures hooks and denylist exist.
-3. **Pre-commit Hook**: Scans staged git files; blocks commit on any detection.
-4. **Commit-msg Hook**: Prevents secrets in commit titles and descriptions.
-5. **Pre-push Hook**: Scans outgoing commit range before pushing.
-6. **Local Denylist (`.git/agent-denylist.txt`)**: Case-insensitive blocking of your real name, machine username, and custom keywords. Lives in `.git/`, never committed.
-7. **CI Pipeline (`secret-scan.yml`)**: Runs scanner and Gitleaks on all PRs and pushes.
-
----
-
-## 📝 Next Steps for Your Project
-
-1. **Fill in Section 12 of `AGENTS.md`** (`Project Profile`):
-   - Set project name, purpose, tech stack, test command, entry points, and definition of done.
-2. **Add Environment Names to `.env.example`**:
-   - Provide empty variable names so teammates and agents know what environment variables are needed.
-3. **Commit and Build!**
-   - Start prompting your AI assistant. The agent will read `AGENTS.md` and `learning/BRIEF.md`, follow the protocol, and maintain your repository's memory automatically.
-
----
-
-## 📄 License
-
-MIT. Free for commercial, personal, and open-source use.
+This repository was created from the `learnings-for-agents` template. The memory tiers, token budgets and the seven-layer safety design are explained in `docs/template-guide.md`. That file documents the template itself, not your project — `init-project.py` removes it for you.

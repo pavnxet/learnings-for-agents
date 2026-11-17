@@ -1,12 +1,15 @@
+<!-- verified-at: <short-sha> · <YYYY-MM-DD> -->
 # Architecture Decision Records (ADR)
 
-## ADR-001: Adopt Single Project Agent Memory Protocol v2.0
-- **Date**: 2026-11-13
-- **Status**: Accepted
-- **Context**: Autonomous and collaborative AI coding assistants need persistent, token-efficient memory and strict safety guardrails without cross-session amnesia or context window bloating.
+> **SEED FILE.** Number ADRs sequentially, append new ones at the bottom, and update `Status` in place. Never rewrite the body of an accepted ADR — supersede it with a new one instead.
+
+## ADR-001: <short decision title>
+- **Date**: <YYYY-MM-DD>
+- **Status**: Proposed | Accepted | Superseded by ADR-<NNN>
+- **Context**: <the forces at play, the constraint that forced a choice>
 - **Options**:
-  - *Option A: Flat prompt or single unstructured scratchpad* — high token overhead, rapid degradation over long projects.
-  - *Option B: Multi-file tiered memory (BRIEF, learning, DECISIONS, EXECUTION_FLOW, summary)* — structured read/write modes, fast cold starts, token lean.
-- **Decision**: Implemented Option B using Single Project Protocol v2.0 with tiered memory budgets (Tier A/B/C) and automated defense-in-depth security scanners.
-- **Consequences**: Agents load only BRIEF.md on start, grep Tier B files on demand, append to summary.md, and enforce fail-closed git hooks.
-- **Revisit when**: Project requirements mandate multi-project monorepo architecture.
+  - *Option A: <name>* — <trade-offs>
+  - *Option B: <name>* — <trade-offs>
+- **Decision**: <what we chose, and why over the alternatives>
+- **Consequences**: <what becomes easy, what becomes hard, what we owe later>
+- **Revisit when**: <trigger that reopens this>

@@ -493,6 +493,7 @@ Before adopting any new tool, library, CLI, service, or dependency:
 - **Project-specific rules**: `<conventions or constraints unique to this project>`
 
 ### First-time setup checklist
+- [ ] Convert the template into your project: `python scripts/init-project.py --name "<project-name>"` (writes the project README, clears the seeded memory files, deletes `docs/template-guide.md`)
 - [ ] Create `learning/` with `BRIEF.md`, `learning.md`, `DECISIONS.md`, `EXECUTION_FLOW.md`, `TOOLS.md`, `summary.md` (each with its `verified-at` header)
 - [ ] Fill in the Project Profile above
 - [ ] `.gitignore` covers `.env*`, local secrets, build artifacts. **It must not ignore `learning/`.**

@@ -37,3 +37,10 @@ if (-not $userEmail) {
 # 4. Run safety doctor
 Write-Host "`nRunning scanner doctor check..." -ForegroundColor Cyan
 python scripts/scan_sensitive.py --doctor
+
+# 5. Point at the one-time project initialisation
+if (Test-Path "docs/template-guide.md") {
+    Write-Host "`n[NEXT] This copy still holds the template's placeholder README." -ForegroundColor Cyan
+    Write-Host "       Convert it to your project:" -ForegroundColor Cyan
+    Write-Host '       python scripts/init-project.py --name "My Project"' -ForegroundColor Cyan
+}
